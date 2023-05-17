@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">jetpack-expedition</string>
+    <string name="incomingCall">수신전화</string>
+</resources>

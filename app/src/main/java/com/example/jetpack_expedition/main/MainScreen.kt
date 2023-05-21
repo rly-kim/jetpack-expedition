@@ -1,73 +1,90 @@
 package com.example.jetpack_expedition.main
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.plusAssign
+import com.example.jetpack_expedition.main.recent.ui.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.recent.ui.RecentScreen
-import com.example.jetpack_expedition.main.record.RecordScreen
+import com.example.jetpack_expedition.main.record.view.RecordListView
+import com.example.jetpack_expedition.main.record.view.RecordingView
 import com.example.jetpack_expedition.main.settings.SettingsScreen
 import com.example.jetpack_expedition.main.settings.view.BlockManagementView
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.bottomSheet
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
-// https://proandroiddev.com/implement-bottom-bar-navigation-in-jetpack-compose-b530b1cd9ee2
+val mainViewModel = MainViewModel()
+ @OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalMaterialApi::class)
  @Composable
 fun MainScreen2() {
-    // - 모든 컴포저블이 접근 가능한 위치에 생성
-    // - NavController와 currentBackStackEntryAsState()를 통해
-    // 제공하는 상태를 회면 외부에서 컴포저블 업데이트에 필요한 소스로 사용 가능
-    // fragment에서 네비게이션 컴포넌트를 사용하는 경우에는 새로운
-    // 네비게이션 그래프를 컴포즈에서 정의할 필요 없고!!
-    // NavHost 컴포저블을 사용할 필요도 없다!!
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = {
-            PhoneAppBottomNavigation(
-                navController,
-                ScreenTab.values().toList(),
-            )
-        },
-    ) { padding ->
-        MainScreenNavigationConfigurations(padding, navController)
-    }
-}
+     val mainTabState = mainViewModel.mainTabState.collectAsStateWithLifecycle()
+     val navController = rememberNavController()
+     val showBottomBar = ScreenTab.values().map {  it.route }.contains(
+         navController
+             .currentBackStackEntryAsState().value?.destination?.route
+     )
+     val bottomSheetNavigator = rememberBottomSheetNavigator()
+     navController.navigatorProvider += bottomSheetNavigator
+
+     Scaffold(
+         topBar = {
+             Text(
+                 modifier = Modifier
+                     .padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
+                 text = mainTabState.value.title, /// TODO 여기서 .value를 해야 옵저빙이 된다. 변수에서 value를 끌고 오면 옵저빙이 안 됨.. 뭐지
+             )
+         },
+         bottomBar = {
+             Log.d("navigation route", "${currentRoute(navController)}")
+             if (showBottomBar) {
+                 PhoneAppBottomNavigation(
+                     mainViewModel,
+                     navController,
+                     ScreenTab.values().toList(),
+                 )
+             }
+         },
+     ) { padding ->
+         com.google.accompanist.navigation.material.ModalBottomSheetLayout(bottomSheetNavigator) {
+             MainScreenNavigationConfigurations(padding, navController)
+         }
+     }
+ }
+
+ @OptIn(ExperimentalMaterialNavigationApi::class)
  @Composable
 private fun MainScreenNavigationConfigurations(
-    padding: PaddingValues,
+     paddingValues: PaddingValues,
     navController: NavHostController
 ) {
-    Column(
-        modifier = Modifier
-            .padding(top = 30.dp)
-            .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-            .background(Color.LightGray)
-    ) {
-        Text(
+        NavHost(
+            navController,
+            startDestination = ScreenTab.Recent.route,
             modifier = Modifier
-                .padding(top = 10.dp, bottom = 10.dp, start = 20.dp,),
-            text = "스크린",
-        )
-        NavHost(navController, startDestination = ScreenTab.Recent.route) {
+                .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
+                .background(Color.LightGray)
+                .padding(paddingValues = paddingValues),
+        ) {
             composable(ScreenTab.Recent.route) {
                 RecentScreen(navController)
             }
             composable(ScreenTab.Record.route) {
-                RecordScreen()
+                RecordingView(navController)
             }
             composable(ScreenTab.Settings.route) {
                 SettingsScreen(navController)
@@ -75,24 +92,31 @@ private fun MainScreenNavigationConfigurations(
             composable("부가기능") {
                 BlockManagementView(navController)
             }
-        }
+            composable("recordList") {
+                RecordListView(navController)
+            }
+            bottomSheet(route = "contact") {
+                ContactBottomSheetContent({}, {})
+            }
     }
 }
 
 @Composable
 private fun PhoneAppBottomNavigation(
+    mainViewModel: MainViewModel,
     navController: NavHostController,
     items: List<ScreenTab>,
 ) {
     BottomNavigation {
         val currentRoute = currentRoute(navController)
-        items.forEach { screen ->
+        items.forEachIndexed { index, screen ->
             BottomNavigationItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
                 label = { Text(screen.route ) },
                 selected = currentRoute == screen.route,
                 onClick = {
                     if(currentRoute != screen.route) {
+                        mainViewModel.tapped(index)
                         navController.navigate(screen.route)
                     }
                 },

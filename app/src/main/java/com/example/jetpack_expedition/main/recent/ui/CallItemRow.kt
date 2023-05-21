@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -22,8 +24,9 @@ import com.example.jetpack_expedition.main.recent.domain.Call
 import com.example.jetpack_expedition.ui.theme.CallHistorySavedSingleTextStyle
 import com.example.jetpack_expedition.ui.theme.CallHistoryUnsavedSingleTextStyle
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CallItemRow(call: Call, expanded: Boolean) {
+fun CallItemRow(bottomSheetState: ModalBottomSheetState, call: Call, expanded: Boolean) {
 
     val callIcon = Icons.Default.Call
     val arrowDownIcon = Icons.Default.ArrowDropDown
@@ -73,7 +76,7 @@ fun CallItemRow(call: Call, expanded: Boolean) {
                         .padding(PaddingValues(start = 20.dp)),
                 ) {
                     CallHistoryCellButtonType.values().forEach {
-                        CallHistoryCellButton(buttonType = it)
+                        CallHistoryCellButton(bottomSheetState, buttonType = it)
                     }
                 }
             }

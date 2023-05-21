@@ -57,11 +57,13 @@ fun SettingsScreen(
         ),
     )
     Column(
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(horizontal = 20.dp)
     ) {
         settingsMap.forEach { entry ->
             Column(
-                modifier = Modifier.padding(bottom = 30.dp)
+                modifier = Modifier.padding(bottom = 40.dp)
             ) {
                 Box(
                     modifier = Modifier.padding(bottom = 10.dp)

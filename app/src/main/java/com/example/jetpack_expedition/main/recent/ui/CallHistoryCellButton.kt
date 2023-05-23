@@ -19,29 +19,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CallHistoryCellButton(modalBottomSheetState: ModalBottomSheetState, buttonType: CallHistoryCellButtonType) {
+fun CallHistoryCellButton(navController: NavController, buttonType: CallHistoryCellButtonType) {
     val coroutineScope = rememberCoroutineScope()
     OutlinedButton(
         onClick = {
-            Log.d("button", "button clicked")
-                  when(modalBottomSheetState.currentValue) {
-                      ModalBottomSheetValue.Hidden -> {
-                          Log.d("button", "button clicked when Hidden")
-                          coroutineScope.launch {
-                              modalBottomSheetState.show()
-                          }
-                      }
-                      ModalBottomSheetValue.Expanded -> {
-                          Log.d("button", "button clicked when Hidden")
-                      }
-                      else -> {}
-//                      ModalBottomSheetValue.Expanded -> {}
-//                      ModalBottomSheetValue.HalfExpanded -> {}
-                  }
+            navController.navigate("contactBottomSheet")
         }, //if (buttonType.onClick == null) {} else { buttonType.onClick }
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),

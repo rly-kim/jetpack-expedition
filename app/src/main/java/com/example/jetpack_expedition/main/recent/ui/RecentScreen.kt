@@ -35,13 +35,13 @@ fun RecentScreen(
     navController: NavController
 ) {
     val pullToRefreshUIViewModel = PullToRefreshUIViewModel()
-    PhoneCallList(pullToRefreshUIViewModel, RecentHistorySampleData.calls)
+    PhoneCallList(navController, pullToRefreshUIViewModel, RecentHistorySampleData.calls)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PhoneCallList(viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
-    val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+fun PhoneCallList(
+    navController: NavController, viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
     val pullToRefreshUIState = viewModel.pullToRefreshUIState.collectAsStateWithLifecycle()
     val state = rememberPullRefreshState(
         pullToRefreshUIState.value is PullToRefreshInProgress,
@@ -89,7 +89,7 @@ fun PhoneCallList(viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
                         }
                 ) {
                     CallItemRow(
-                        bottomSheetState = modalBottomSheetState,
+                        navController = navController,
                         call = item,
                         expanded = isExpanded
                     )

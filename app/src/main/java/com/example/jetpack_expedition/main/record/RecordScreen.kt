@@ -14,12 +14,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecordScreen(
@@ -32,16 +34,9 @@ fun RecordScreen(
         Row(
             modifier = Modifier.weight(1f),
         ) {
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
-                shape = RoundedCornerShape(8.dp),
-                onClick = { /*TODO*/ },
-            ) {
-                Text(
-                    text = "일반",
-                    style = TextStyle(Color.Black)
-                )
-            }
+            RecordTopButton("일반")
+            RecordTopButton("인터뷰")
+            RecordTopButton("텍스트 변환")
         }
         Box(
             contentAlignment = Alignment.Center,
@@ -63,5 +58,22 @@ fun RecordScreen(
                 Icon(Icons.Default.AddCircle, contentDescription = null)
             }
         }
+    }
+}
+
+@Composable
+fun RecordTopButton(
+    buttonText: String,
+) {
+
+    Button(
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+        shape = RoundedCornerShape(8.dp),
+        onClick = { /*TODO*/ },
+    ) {
+        Text(
+            text = buttonText,
+            style = TextStyle(Color.Black)
+        )
     }
 }

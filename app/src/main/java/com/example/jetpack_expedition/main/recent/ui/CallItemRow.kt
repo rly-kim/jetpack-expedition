@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.jetpack_expedition.R
 import com.example.jetpack_expedition.main.recent.domain.Call
 import com.example.jetpack_expedition.ui.theme.CallHistorySavedSingleTextStyle
@@ -26,7 +27,7 @@ import com.example.jetpack_expedition.ui.theme.CallHistoryUnsavedSingleTextStyle
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CallItemRow(bottomSheetState: ModalBottomSheetState, call: Call, expanded: Boolean) {
+fun CallItemRow(navController: NavController, call: Call, expanded: Boolean) {
 
     val callIcon = Icons.Default.Call
     val arrowDownIcon = Icons.Default.ArrowDropDown
@@ -76,7 +77,7 @@ fun CallItemRow(bottomSheetState: ModalBottomSheetState, call: Call, expanded: B
                         .padding(PaddingValues(start = 20.dp)),
                 ) {
                     CallHistoryCellButtonType.values().forEach {
-                        CallHistoryCellButton(bottomSheetState, buttonType = it)
+                        CallHistoryCellButton(navController = navController, buttonType = it)
                     }
                 }
             }

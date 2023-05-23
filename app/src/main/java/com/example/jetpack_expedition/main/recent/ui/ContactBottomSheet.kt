@@ -7,71 +7,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-
-//@OptIn(ExperimentalMaterialApi::class)
-//@Composable
-//fun ModalBottomSheetView(
-//    modalBottomSheetState: ModalBottomSheetState,
-//    sheetContent: @Composable () -> Unit,
-//    content: @Composable () -> Unit,
-//) {
-//
-//}
-
-@Composable
-fun ModalBottomSheet(
-    content: @Composable BottomSheetBuilder.()->Unit
-) {
-    val bottomSheetBuilder = BottomSheetBuilder()
-    bottomSheetBuilder.content()
-}
-
-class BottomSheetBuilder {
-
-    @Composable
-    fun nonSheetItem(
-        content: @Composable () -> Unit
-    ) {
-        content()
-    }
-
-    @OptIn(ExperimentalMaterialApi::class)
-    @Composable
-    fun bottomSheetLayout(
-        modalBottomSheetState: ModalBottomSheetState,
-        sheetContent: @Composable () -> Unit,
-        content: @Composable () -> Unit
-    ) {
-        ModalBottomSheetLayout(
-            sheetState = modalBottomSheetState,
-            sheetContent = { sheetContent() }
-        ) {
-            content()
-        }
-    }
-}
 
 @Composable
 fun ContactBottomSheetContent(
@@ -79,7 +36,9 @@ fun ContactBottomSheetContent(
     onSave: suspend () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    Column {
+    Column(
+      //  modifier = Modifier.statusBarsPadding().navigationBarsPadding().imePadding()
+    ) {
         Text(text = "연락처 추가")
         ContactNickNameField()
         ContactNumberField()
@@ -151,6 +110,9 @@ fun ContactNumberField() {
             onValueChange = {
                 textState.value = it
             },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+            ),
         )
     }
 }

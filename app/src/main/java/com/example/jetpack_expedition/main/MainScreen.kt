@@ -1,8 +1,10 @@
 package com.example.jetpack_expedition.main
 
+import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -22,82 +24,93 @@ import com.example.jetpack_expedition.main.recent.ui.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.recent.ui.RecentScreen
 import com.example.jetpack_expedition.main.record.view.RecordListView
 import com.example.jetpack_expedition.main.record.view.RecordingView
+import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.settings.SettingsScreen
 import com.example.jetpack_expedition.main.settings.view.BlockManagementView
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
-val mainViewModel = MainViewModel()
- @OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalMaterialApi::class)
- @Composable
-fun MainScreen2() {
-     val mainTabState = mainViewModel.mainTabState.collectAsStateWithLifecycle()
-     val navController = rememberNavController()
-     val showBottomBar = ScreenTab.values().map {  it.route }.contains(
-         navController
-             .currentBackStackEntryAsState().value?.destination?.route
-     )
-     val bottomSheetNavigator = rememberBottomSheetNavigator()
-     navController.navigatorProvider += bottomSheetNavigator
+@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalMaterialApi::class)
+@Composable
+fun MainScreen2(mainViewModel: MainViewModel, recordDataViewModel: RecordDataViewModel) {
+    val mainTabState = mainViewModel.mainTabState.collectAsStateWithLifecycle()
+    val navController = rememberNavController()
+    val showBars = ScreenTab.values().map { it.route }.contains(
+        navController
+            .currentBackStackEntryAsState().value?.destination?.route
+    )
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    bottomSheetNavigator.navigatorSheetState.targetValue
+    navController.navigatorProvider += bottomSheetNavigator
 
-     Scaffold(
-         topBar = {
-             Text(
-                 modifier = Modifier
-                     .padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
-                 text = mainTabState.value.title, /// TODO 여기서 .value를 해야 옵저빙이 된다. 변수에서 value를 끌고 오면 옵저빙이 안 됨.. 뭐지
-             )
-         },
-         bottomBar = {
-             Log.d("navigation route", "${currentRoute(navController)}")
-             if (showBottomBar) {
-                 PhoneAppBottomNavigation(
-                     mainViewModel,
-                     navController,
-                     ScreenTab.values().toList(),
-                 )
-             }
-         },
-     ) { padding ->
-         com.google.accompanist.navigation.material.ModalBottomSheetLayout(bottomSheetNavigator) {
-             MainScreenNavigationConfigurations(padding, navController)
-         }
-     }
- }
+    Scaffold(
+        topBar = {
+            if(showBars)
+                Text(
+                modifier = Modifier
+                    .padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
+                text = mainTabState.value.title, /// TODO 여기서 .value를 해야 옵저빙이 된다. 변수에서 value를 끌고 오면 옵저빙이 안 됨.. 뭐지
+            )
+        },
+        bottomBar = {
+            Log.d("navigation route", "${currentRoute(navController)}")
+            if (showBars) {
+                PhoneAppBottomNavigation(
+                    mainViewModel,
+                    navController,
+                    ScreenTab.values().toList(),
+                )
+            }
+        },
+    ) { padding ->
+        com.google.accompanist.navigation.material.ModalBottomSheetLayout(bottomSheetNavigator) {
+            MainScreenNavigationConfigurations(padding, navController, recordDataViewModel)
+        }
+    }
+}
 
- @OptIn(ExperimentalMaterialNavigationApi::class)
- @Composable
+@OptIn(ExperimentalMaterialNavigationApi::class)
+@Composable
 private fun MainScreenNavigationConfigurations(
-     paddingValues: PaddingValues,
-    navController: NavHostController
+    paddingValues: PaddingValues,
+    navController: NavHostController,
+    recordDataViewModel: RecordDataViewModel,
 ) {
-        NavHost(
-            navController,
-            startDestination = ScreenTab.Recent.route,
-            modifier = Modifier
-                .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-                .background(Color.LightGray)
-                .padding(paddingValues = paddingValues),
-        ) {
-            composable(ScreenTab.Recent.route) {
-                RecentScreen(navController)
-            }
-            composable(ScreenTab.Record.route) {
-                RecordingView(navController)
-            }
-            composable(ScreenTab.Settings.route) {
-                SettingsScreen(navController)
-            }
-            composable("부가기능") {
-                BlockManagementView(navController)
-            }
-            composable("recordList") {
-                RecordListView(navController)
-            }
-            bottomSheet(route = "contact") {
-                ContactBottomSheetContent({}, {})
-            }
+    NavHost(
+        navController,
+        startDestination = ScreenTab.Recent.route,
+        modifier = Modifier
+            .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
+            .background(Color.LightGray)
+            .padding(paddingValues = paddingValues),
+    ) {
+        composable(ScreenTab.Recent.route) {
+            RecentScreen(navController)
+        }
+        composable(ScreenTab.Record.route) {
+           // RecordScreen(navController)
+            RecordListView(navController, recordDataViewModel)
+        }
+        composable(ScreenTab.Settings.route) {
+            SettingsScreen(navController)
+        }
+        composable("부가기능") {
+            BlockManagementView(navController)
+        }
+        composable("recording") {
+            RecordingView(navController)
+        }
+//        composable("recordList") {
+//            RecordListView(navController, recordDataViewModel)
+//        }
+        bottomSheet(route = "contactBottomSheet") {
+            ContactBottomSheetContent({
+                navController.popBackStack()
+            }, {
+                navController.popBackStack()
+            })
+        }
     }
 }
 
@@ -112,10 +125,10 @@ private fun PhoneAppBottomNavigation(
         items.forEachIndexed { index, screen ->
             BottomNavigationItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
-                label = { Text(screen.route ) },
+                label = { Text(screen.route) },
                 selected = currentRoute == screen.route,
                 onClick = {
-                    if(currentRoute != screen.route) {
+                    if (currentRoute != screen.route) {
                         mainViewModel.tapped(index)
                         navController.navigate(screen.route)
                     }
@@ -136,7 +149,6 @@ private fun currentRoute(navController: NavHostController): String? {
 //    object Record: BottomNavigationScreens("녹음")
 //    object Settings: BottomNavigationScreens("설정")
 //}
-
 
 
 // val mainViewModel = MainViewModel()

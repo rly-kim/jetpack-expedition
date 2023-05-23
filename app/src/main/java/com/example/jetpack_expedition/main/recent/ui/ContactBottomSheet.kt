@@ -26,8 +26,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.jetpack_expedition.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,7 +41,7 @@ fun ContactBottomSheetContent(
     Column(
       //  modifier = Modifier.statusBarsPadding().navigationBarsPadding().imePadding()
     ) {
-        Text(text = "연락처 추가")
+        Text(text = stringResource(R.string.addContactTitle))
         ContactNickNameField()
         ContactNumberField()
         Row {
@@ -51,7 +53,7 @@ fun ContactBottomSheetContent(
                     }
                 }
             ) {
-                Text("닫기")
+                Text(stringResource(R.string.closeContactBottomSheetText))
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(
@@ -62,7 +64,7 @@ fun ContactBottomSheetContent(
                     }
                 }
             ) {
-                Text("저장")
+                Text(stringResource(R.string.saveContactBottomSheetText))
             }
         }
     }

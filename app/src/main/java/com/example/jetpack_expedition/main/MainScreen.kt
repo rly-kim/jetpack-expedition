@@ -1,10 +1,8 @@
 package com.example.jetpack_expedition.main
 
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,8 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
 import com.example.jetpack_expedition.main.recent.ui.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.recent.ui.RecentScreen
-import com.example.jetpack_expedition.main.record.view.RecordListView
-import com.example.jetpack_expedition.main.record.view.RecordingView
+import com.example.jetpack_expedition.main.record.RecordListScreen
 import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.settings.SettingsScreen
 import com.example.jetpack_expedition.main.settings.view.BlockManagementView
@@ -86,24 +84,17 @@ private fun MainScreenNavigationConfigurations(
             .padding(paddingValues = paddingValues),
     ) {
         composable(ScreenTab.Recent.route) {
-            RecentScreen(navController)
+            RecentScreen(onBottomSheetCall = { navController.navigate("contactBottomSheet") } )
         }
         composable(ScreenTab.Record.route) {
-           // RecordScreen(navController)
-            RecordListView(navController, recordDataViewModel)
+            RecordListScreen(recordDataViewModel)
         }
         composable(ScreenTab.Settings.route) {
-            SettingsScreen(navController)
+            SettingsScreen( navigateToAdditionalFunctionsPage = {navController.navigate("additionalFunctionsPage")})
         }
-        composable("부가기능") {
-            BlockManagementView(navController)
+        composable("additionalFunctionsPage") {
+            BlockManagementView()
         }
-        composable("recording") {
-            RecordingView(navController)
-        }
-//        composable("recordList") {
-//            RecordListView(navController, recordDataViewModel)
-//        }
         bottomSheet(route = "contactBottomSheet") {
             ContactBottomSheetContent({
                 navController.popBackStack()
@@ -130,7 +121,7 @@ private fun PhoneAppBottomNavigation(
                 onClick = {
                     if (currentRoute != screen.route) {
                         mainViewModel.tapped(index)
-                        navController.navigate(screen.route)
+                        navController.navigateSingleTopTo(screen.route)
                     }
                 },
             )
@@ -141,84 +132,16 @@ private fun PhoneAppBottomNavigation(
 @Composable
 private fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route // arguments.getString(KEY_ROUTE)
+    return navBackStackEntry?.destination?.route
 }
 
-//sealed class BottomNavigationScreens(val route: String) {
-//    object Recent: BottomNavigationScreens("최근기록")
-//    object Record: BottomNavigationScreens("녹음")
-//    object Settings: BottomNavigationScreens("설정")
-//}
-
-
-// val mainViewModel = MainViewModel()
-
-//@Composable
-//fun MainScreen2() {
-//    val currentTabState = mainViewModel.mainTabState.collectAsState()
-//
-//    Scaffold(
-//        bottomBar = {
-//            SelectableBottomNavigation(
-//                mainViewModel,
-//                currentTabState,
-//                ScreenTab.values(),
-//            )
-//        },
-//    ) { padding ->
-//        MainScreenNavigator(padding, currentTabState)
-//    }
-//}
-//
-//@Composable
-//private fun SelectableBottomNavigation(
-//    mainViewModel: MainViewModel,
-//    currentTabState: State<ScreenTab>,
-//    items: Array<ScreenTab>
-//) {
-//    BottomNavigation {
-//        val currentRoute = currentTabState.value.route
-//        items.forEachIndexed { index, screen ->
-//            BottomNavigationItem(
-//                icon = { screen.icon },
-//                label = { Text(screen.route ) },
-//                selected = currentRoute == screen.route,
-//                onClick = {
-//                    if(currentRoute != screen.route) {
-//                        mainViewModel.tapped(index)
-//                    }
-//                },
-//            )
-//        }
-//    }
-//}
-//
-//@Composable
-//private fun MainScreenNavigator(
-//    padding: PaddingValues,
-//    currentTabState: State<ScreenTab>,
-//) {
-//    Column(
-//        modifier = Modifier
-//            .padding(top = 30.dp)
-//            .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-//            .background(Color.LightGray)
-//    ) {
-//        Text(
-//            modifier = Modifier
-//                .padding(top = 10.dp, bottom = 10.dp, start = 20.dp,),
-//            text = currentTabState.value.title,
-//        )
-//        when(currentTabState.value) {
-//            ScreenTab.Recent -> {
-//                RecentScreen()
-//            }
-//            ScreenTab.Record -> {
-//                RecordScreen()
-//            }
-//            ScreenTab.Settings -> {
-//                SettingsScreen()
-//            }
-//        }
-//    }
-//}
+private fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }

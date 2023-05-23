@@ -1,4 +1,4 @@
-package com.example.jetpack_expedition.main.record.view
+package com.example.jetpack_expedition.main.record
 
 import android.Manifest
 import android.content.Context
@@ -44,15 +44,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
+import com.example.jetpack_expedition.R
 import com.example.jetpack_expedition.common.ui.DoubleCircleDivider
 import com.example.jetpack_expedition.common.util.DateTimeUtil
 import com.example.jetpack_expedition.main.record.state.PermissionState
@@ -62,8 +62,6 @@ import com.example.jetpack_expedition.main.record.state.RecordProcessState
 import com.example.jetpack_expedition.main.record.state.RecordingInTemporalPlayState
 import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.record.viewmodel.RecordingViewModel
-import kotlinx.coroutines.launch
-import java.security.Permission
 
 @Composable
 fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) -> Unit) {
@@ -83,9 +81,9 @@ fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) ->
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RecordListView(
-    navController: NavController,
+fun RecordListScreen(
     recordDataViewModel: RecordDataViewModel,
 ) {
     val context = LocalContext.current
@@ -102,7 +100,6 @@ fun RecordListView(
             }
             PermissionState.Granted
         } else {
-            // TODO modal (접근권한을 허용해주세요! -> 버튼 누르면 설정 페이지로 이동)
             PermissionState.Denied
         }
     }
@@ -138,7 +135,7 @@ fun RecordListView(
         AlertDialog(
             onDismissRequest = {},
             text = {
-                Text("접근 권한을 허용해주세요")
+                Text(stringResource(R.string.permissionGuideBodyText))
             },
             buttons = { AlertButtons(context) { permissionState = PermissionState.Ignored } },
             properties = DialogProperties(
@@ -237,7 +234,7 @@ fun AlertButtons(context: Context, permissionIgnore: () -> Unit) {
         Button(onClick = {
             permissionIgnore()
         }) {
-            Text("무시하기")
+            Text(stringResource(R.string.permissionIgnoreText))
         }
         Button(onClick = {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -255,7 +252,7 @@ fun AlertButtons(context: Context, permissionIgnore: () -> Unit) {
             ) // Replace with your setting key
             context.startActivity(intent)
         }) {
-            Text("설정하기")
+            Text(stringResource(R.string.permissionSettingText))
         }
     }
 }

@@ -1,7 +1,6 @@
-package com.example.jetpack_expedition.main.record.data
+package com.example.jetpack_expedition.main.record.domain
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 

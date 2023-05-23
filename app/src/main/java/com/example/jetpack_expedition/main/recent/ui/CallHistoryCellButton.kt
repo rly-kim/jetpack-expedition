@@ -24,12 +24,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CallHistoryCellButton(navController: NavController, buttonType: CallHistoryCellButtonType) {
-    val coroutineScope = rememberCoroutineScope()
+fun CallHistoryCellButton(onBottomSheetCall: () -> Unit, buttonType: CallHistoryCellButtonType) {
     OutlinedButton(
         onClick = {
-            navController.navigate("contactBottomSheet")
-        }, //if (buttonType.onClick == null) {} else { buttonType.onClick }
+            onBottomSheetCall()
+        },
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
         border = null,

@@ -1,15 +1,11 @@
 package com.example.jetpack_expedition.main.recent.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
@@ -18,11 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.example.jetpack_expedition.common.ui.DoubleCircleDivider
 import com.example.jetpack_expedition.main.recent.domain.Call
 import com.example.jetpack_expedition.main.recent.data.RecentHistorySampleData
@@ -32,16 +26,16 @@ import com.example.jetpack_expedition.main.recent.ui.viewmodel.PullToRefreshUIVi
 
 @Composable
 fun RecentScreen(
-    navController: NavController
+    onBottomSheetCall: () -> Unit
 ) {
     val pullToRefreshUIViewModel = PullToRefreshUIViewModel()
-    PhoneCallList(navController, pullToRefreshUIViewModel, RecentHistorySampleData.calls)
+    PhoneCallList(onBottomSheetCall, pullToRefreshUIViewModel, RecentHistorySampleData.calls)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PhoneCallList(
-    navController: NavController, viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
+    onBottomSheetCall: () -> Unit, viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
     val pullToRefreshUIState = viewModel.pullToRefreshUIState.collectAsStateWithLifecycle()
     val state = rememberPullRefreshState(
         pullToRefreshUIState.value is PullToRefreshInProgress,
@@ -89,7 +83,7 @@ fun PhoneCallList(
                         }
                 ) {
                     CallItemRow(
-                        navController = navController,
+                        onBottomSheetCall = onBottomSheetCall,
                         call = item,
                         expanded = isExpanded
                     )

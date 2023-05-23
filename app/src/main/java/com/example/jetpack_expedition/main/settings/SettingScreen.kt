@@ -19,20 +19,22 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.jetpack_expedition.R
 
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navigateToAdditionalFunctionsPage: () -> Unit
 ) {
     val settingsMap: MutableMap<SettingBlock, List<SettingBlockContent>> = mutableMapOf(
         SettingBlock.DataSettings to listOf(
             SettingBlockContent({
-                Text(text = "최근기록")
+                Text(text = stringResource(R.string.settingsRecentSectionContent))
             }, {
                 Column {
-                    Text(text = "총 통화기록 수: 7")
+                    Text(text = "총 통화기록 수: 7") /// TEMP
                 }
             })
         ),
@@ -40,7 +42,7 @@ fun SettingsScreen(
             SettingBlockContent({
                 Row {
                     Icon(Icons.Default.Phone, contentDescription = null)
-                    Text(text = "듀얼번호")
+                    Text(text = stringResource(R.string.settingsDualSectionContent))
                 }
             }, {
 
@@ -48,7 +50,7 @@ fun SettingsScreen(
             SettingBlockContent({
                 Row {
                     Icon(Icons.Default.Phone, contentDescription = null)
-                    Text(text = "차단관리")
+                    Text(text = stringResource(R.string.settingsBlockManagementSectionContent))
                 }
             }, {
 
@@ -73,7 +75,7 @@ fun SettingsScreen(
                     Column {
                         Button(
                             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-                            onClick = { navController.navigate("부가기능") }
+                            onClick = { navigateToAdditionalFunctionsPage() }
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth()
@@ -106,12 +108,12 @@ enum class SettingBlock(
     DataSettings({
         Row {
             Icons.Default.ThumbUp
-            Text(text = "데이터")
+            Text(text = stringResource(R.string.settingsDataSectionText))
         }
     }),
     AdditionalFeatures({
         Row {
-            Text(text = "부가기능")
+            Text(text = stringResource(R.string.settingsAdditionalFunctionsSectionText))
         }
     })
 }

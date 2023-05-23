@@ -27,7 +27,7 @@ import com.example.jetpack_expedition.ui.theme.CallHistoryUnsavedSingleTextStyle
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CallItemRow(navController: NavController, call: Call, expanded: Boolean) {
+fun CallItemRow(onBottomSheetCall: () -> Unit, call: Call, expanded: Boolean) {
 
     val callIcon = Icons.Default.Call
     val arrowDownIcon = Icons.Default.ArrowDropDown
@@ -77,7 +77,7 @@ fun CallItemRow(navController: NavController, call: Call, expanded: Boolean) {
                         .padding(PaddingValues(start = 20.dp)),
                 ) {
                     CallHistoryCellButtonType.values().forEach {
-                        CallHistoryCellButton(navController = navController, buttonType = it)
+                        CallHistoryCellButton(onBottomSheetCall = onBottomSheetCall, buttonType = it)
                     }
                 }
             }

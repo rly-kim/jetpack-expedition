@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">jetpack-expedition</string>
     <string name="incomingCall">수신전화</string>
+    <string name="permissionIgnoreText">무시하기</string>
+    <string name="permissionSettingText">설정하기</string>
+    <string name="permissionGuideBodyText">접근 권한을 허용해주세요</string>
+    <string name="blockManagementPageTitle">차단 관리 페이지</string>
+    <string name="settingsDataSectionText">데이터</string>
+    <string name="settingsAdditionalFunctionsSectionText">부가기능</string>
+    <string name="settingsRecentSectionContent">최근기록</string>
+    <string name="settingsDualSectionContent">듀얼번호</string>
+    <string name="settingsBlockManagementSectionContent">차단관리</string>
+    <string name="addContactTitle">연락처 추가</string>
+    <string name="closeContactBottomSheetText">닫기</string>
+    <string name="saveContactBottomSheetText">저장</string>
 </resources>

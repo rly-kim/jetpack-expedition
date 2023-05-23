@@ -35,7 +35,6 @@ class RecordingViewModel(
     private val task = object : TimerTask() {
         override fun run() {
             // Call your event or function here
-            println("Event called every second")
             streamCurrentPosition()
         }
     }

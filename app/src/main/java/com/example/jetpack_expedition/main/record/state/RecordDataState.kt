@@ -1,6 +1,6 @@
 package com.example.jetpack_expedition.main.record.state
 
-import com.example.jetpack_expedition.main.record.data.Record
+import com.example.jetpack_expedition.main.record.domain.Record
 
 abstract class RecordDataState {
     abstract val recordList: List<Record>
@@ -20,10 +20,4 @@ class RecordDataFetchedState(override val recordList: List<Record>): RecordDataS
 }
 
 class RecordDataFetchFailedState(override val recordList: List<Record>): RecordDataState() {
-}
-
-enum class PermissionState {
-    Granted,
-    Denied,
-    Ignored,
 }

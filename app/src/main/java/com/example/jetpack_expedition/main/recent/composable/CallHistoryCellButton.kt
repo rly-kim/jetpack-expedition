@@ -15,12 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CallHistoryCellButton(onBottomSheetCall: () -> Unit, buttonType: CallHistoryCellButtonType) {
     OutlinedButton(
         onClick = {
-            onBottomSheetCall()
+            if(buttonType == CallHistoryCellButtonType.Edit) onBottomSheetCall()
         },
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
         elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
@@ -34,11 +33,4 @@ fun CallHistoryCellButton(onBottomSheetCall: () -> Unit, buttonType: CallHistory
             Text(buttonType.buttonName)
         }
     }
-}
-
-enum class CallHistoryCellButtonType(val iconUrl: ImageVector, val buttonName: String) {
-    Call(Icons.Default.Call, "전화"),
-    Text(Icons.Default.MailOutline, "문자"),
-    Edit(Icons.Default.Edit, "수정")
-    ;
 }

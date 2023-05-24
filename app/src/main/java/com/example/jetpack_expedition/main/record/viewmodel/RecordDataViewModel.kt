@@ -5,6 +5,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.jetpack_expedition.domain.entity.record.Record
 import com.example.jetpack_expedition.main.record.state.RecordDataFetchedState
 import com.example.jetpack_expedition.main.record.state.RecordDataInitFetchingState
@@ -12,6 +13,8 @@ import com.example.jetpack_expedition.main.record.state.RecordDataInitState
 import com.example.jetpack_expedition.main.record.state.RecordDataState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -24,7 +27,11 @@ class RecordDataViewModel(
     val recordDataState = _recordDataState.asStateFlow()
 
     fun getRecordFiles() {
-        _recordDataState.value = RecordDataInitFetchingState
+        viewModelScope.launch {
+            _recordDataState.update {
+                RecordDataInitFetchingState
+            }
+        }
         val mediaMetadataRetriever = MediaMetadataRetriever()
         val files = File("$filePath/Voice Recorder").listFiles()
         val fileRecords = files
@@ -34,6 +41,10 @@ class RecordDataViewModel(
                 val dateTime = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE) ?: ""
                 Record(title = it.name, it.toUri(), duration, dateTime)
             }
-        _recordDataState.value = RecordDataFetchedState(recordList = fileRecords)
+        viewModelScope.launch {
+            _recordDataState.update {
+                RecordDataFetchedState(recordList = fileRecords)
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ package com.example.jetpack_expedition.common.util
 object DateTimeUtil {
 
     fun convertStringMicroSecondsDurationToMilliSeconds(duration: String): Int {
-        return duration.toInt() / 1000
+        return duration.toInt()// / 1000
     }
 
     fun changeDurationFormat(duration: String): String {

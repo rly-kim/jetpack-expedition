@@ -56,7 +56,9 @@ fun RecordListScreen(
             Lifecycle.Event.ON_START -> {
                 permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
-
+            Lifecycle.Event.ON_STOP -> {
+                recordingViewModel.turnOffMedia()
+            }
             else -> {}
         }
     }

@@ -31,6 +31,8 @@ class RecordingViewModel(
     private val context: Application
 ) : AndroidViewModel(context) {
 
+
+
     private var _recordingState = MutableStateFlow<RecordProcessState>(RecordingInitState)
     val recordingState = _recordingState.asStateFlow()
 
@@ -50,8 +52,11 @@ class RecordingViewModel(
         }
     }
 
+    fun turnOffMedia() {
+        pause()
+    }
+
     private fun play(path: Uri) {
-        /// main thread에서 실행하지만 block하지 않음
         viewModelScope.launch {
             timer = Timer()
             task = makeTimerTask()
@@ -69,7 +74,6 @@ class RecordingViewModel(
             timer?.cancel()
             timer = null
             mediaPlayer.apply {
-                Log.d("currentPosition", currentPosition.toString())
                 pause()
             }
         }

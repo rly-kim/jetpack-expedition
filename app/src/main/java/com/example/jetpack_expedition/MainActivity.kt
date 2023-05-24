@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jetpack_expedition.main.MainScreen2
 import com.example.jetpack_expedition.main.MainViewModel
-import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
+import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.ui.theme.JetpackexpeditionTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
         val recordDataViewModel = RecordDataViewModel(this.application, Environment.getExternalStorageDirectory().absolutePath)
         setContent {
             JetpackexpeditionTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background

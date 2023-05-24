@@ -19,12 +19,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
-import com.example.jetpack_expedition.main.recent.composable.ContactBottomSheetContent
-import com.example.jetpack_expedition.main.recent.RecentScreen
-import com.example.jetpack_expedition.main.record.RecordListScreen
-import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
-import com.example.jetpack_expedition.main.settings.SettingsScreen
-import com.example.jetpack_expedition.main.settings.view.BlockManagementView
+import com.example.jetpack_expedition.main.composable.MainScreenNavigationConfigurations
+import com.example.jetpack_expedition.main.composable.PhoneAppBottomNavigation
+import com.example.jetpack_expedition.main.composable.currentRoute
+import com.example.jetpack_expedition.main.screen.recent.composable.ContactBottomSheetContent
+import com.example.jetpack_expedition.main.screen.recent.RecentScreen
+import com.example.jetpack_expedition.main.screen.record.RecordListScreen
+import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordDataViewModel
+import com.example.jetpack_expedition.main.screen.settings.SettingsScreen
+import com.example.jetpack_expedition.main.screen.settings.view.BlockManagementView
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
@@ -48,7 +51,7 @@ fun MainScreen2(mainViewModel: MainViewModel, recordDataViewModel: RecordDataVie
                 Text(
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
-                text = mainTabState.value.title, /// TODO 여기서 .value를 해야 옵저빙이 된다. 변수에서 value를 끌고 오면 옵저빙이 안 됨.. 뭐지
+                text = mainTabState.value.title,
             )
         },
         bottomBar = {
@@ -68,74 +71,7 @@ fun MainScreen2(mainViewModel: MainViewModel, recordDataViewModel: RecordDataVie
     }
 }
 
-@OptIn(ExperimentalMaterialNavigationApi::class)
-@Composable
-private fun MainScreenNavigationConfigurations(
-    paddingValues: PaddingValues,
-    navController: NavHostController,
-    recordDataViewModel: RecordDataViewModel,
-) {
-    NavHost(
-        navController,
-        startDestination = ScreenTab.Recent.route,
-        modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-            .background(Color.LightGray)
-            .padding(paddingValues = paddingValues),
-    ) {
-        composable(ScreenTab.Recent.route) {
-            RecentScreen(onBottomSheetCall = { navController.navigate("contactBottomSheet") } )
-        }
-        composable(ScreenTab.Record.route) {
-            RecordListScreen(recordDataViewModel)
-        }
-        composable(ScreenTab.Settings.route) {
-            SettingsScreen( navigateToAdditionalFunctionsPage = {navController.navigate("additionalFunctionsPage")})
-        }
-        composable("additionalFunctionsPage") {
-            BlockManagementView()
-        }
-        bottomSheet(route = "contactBottomSheet") {
-            ContactBottomSheetContent({
-                navController.popBackStack()
-            }, {
-                navController.popBackStack()
-            })
-        }
-    }
-}
-
-@Composable
-private fun PhoneAppBottomNavigation(
-    mainViewModel: MainViewModel,
-    navController: NavHostController,
-    items: List<ScreenTab>,
-) {
-    BottomNavigation {
-        val currentRoute = currentRoute(navController)
-        items.forEachIndexed { index, screen ->
-            BottomNavigationItem(
-                icon = { Icon(screen.icon, contentDescription = null) },
-                label = { Text(screen.route) },
-                selected = currentRoute == screen.route,
-                onClick = {
-                    if (currentRoute != screen.route) {
-                        mainViewModel.tapped(index)
-                        navController.navigateSingleTopTo(screen.route)
-                    }
-                },
-            )
-        }
-    }
-}
-
-@Composable
-private fun currentRoute(navController: NavHostController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route
-}
-
-private fun NavHostController.navigateSingleTopTo(route: String) =
+fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         popUpTo(
             this@navigateSingleTopTo.graph.findStartDestination().id

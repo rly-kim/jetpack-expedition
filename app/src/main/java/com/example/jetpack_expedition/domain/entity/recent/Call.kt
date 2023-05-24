@@ -1,4 +1,4 @@
-package com.example.jetpack_expedition.main.recent.domain
+package com.example.jetpack_expedition.domain.entity.recent
 
 data class Call(
     val name: String = "",

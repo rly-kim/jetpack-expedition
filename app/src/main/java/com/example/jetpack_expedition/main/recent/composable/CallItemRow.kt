@@ -1,4 +1,4 @@
-package com.example.jetpack_expedition.main.recent.ui
+package com.example.jetpack_expedition.main.recent.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -19,9 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.jetpack_expedition.R
-import com.example.jetpack_expedition.main.recent.domain.Call
+import com.example.jetpack_expedition.domain.entity.recent.Call
 import com.example.jetpack_expedition.ui.theme.CallHistorySavedSingleTextStyle
 import com.example.jetpack_expedition.ui.theme.CallHistoryUnsavedSingleTextStyle
 

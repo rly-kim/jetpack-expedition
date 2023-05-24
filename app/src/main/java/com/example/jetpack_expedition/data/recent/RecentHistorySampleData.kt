@@ -1,6 +1,6 @@
-package com.example.jetpack_expedition.main.recent.data
+package com.example.jetpack_expedition.data.recent
 
-import com.example.jetpack_expedition.main.recent.domain.Call
+import com.example.jetpack_expedition.domain.entity.recent.Call
 
 object RecentHistorySampleData {
     var calls = listOf(

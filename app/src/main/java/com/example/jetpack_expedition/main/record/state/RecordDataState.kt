@@ -1,8 +1,8 @@
 package com.example.jetpack_expedition.main.record.state
 
-import com.example.jetpack_expedition.main.record.domain.Record
+import com.example.jetpack_expedition.domain.entity.record.Record
 
-abstract class RecordDataState {
+sealed class RecordDataState {
     abstract val recordList: List<Record>
 }
 
@@ -10,10 +10,9 @@ class RecordDataInitState(override val recordList: List<Record>) : RecordDataSta
 
 }
 
-class RecordDataInitFetchingState: RecordDataState() {
+object RecordDataInitFetchingState : RecordDataState() {
     override val recordList: List<Record>
         get() = listOf()
-
 }
 
 class RecordDataFetchedState(override val recordList: List<Record>): RecordDataState() {

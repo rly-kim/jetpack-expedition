@@ -1,4 +1,4 @@
-package com.example.jetpack_expedition.main.recent.ui
+package com.example.jetpack_expedition.main.recent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jetpack_expedition.common.ui.DoubleCircleDivider
-import com.example.jetpack_expedition.main.recent.domain.Call
-import com.example.jetpack_expedition.main.recent.data.RecentHistorySampleData
+import com.example.jetpack_expedition.domain.entity.recent.Call
+import com.example.jetpack_expedition.data.recent.RecentHistorySampleData
 import com.example.jetpack_expedition.common.ui.noRippleClickable
-import com.example.jetpack_expedition.main.recent.ui.state.PullToRefreshInProgress
-import com.example.jetpack_expedition.main.recent.ui.viewmodel.PullToRefreshUIViewModel
+import com.example.jetpack_expedition.main.recent.composable.CallItemRow
+import com.example.jetpack_expedition.main.recent.state.PullToRefreshInProgress
+import com.example.jetpack_expedition.main.recent.viewmodel.PullToRefreshUIViewModel
 
 @Composable
 fun RecentScreen(
@@ -45,6 +46,7 @@ fun PhoneCallList(
             modifier = Modifier
                 .background(Color.LightGray)
                 .pullRefresh(state)//state 적용
+                .fillMaxSize()
         ) {
             item {
                 Box(

@@ -1,9 +1,9 @@
-package com.example.jetpack_expedition.main.recent.ui.viewmodel
+package com.example.jetpack_expedition.main.recent.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.jetpack_expedition.main.recent.ui.state.PullToRefreshIdle
-import com.example.jetpack_expedition.main.recent.ui.state.PullToRefreshInProgress
-import com.example.jetpack_expedition.main.recent.ui.state.PullToRefreshUIState
+import com.example.jetpack_expedition.main.recent.state.PullToRefreshIdle
+import com.example.jetpack_expedition.main.recent.state.PullToRefreshInProgress
+import com.example.jetpack_expedition.main.recent.state.PullToRefreshUIState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

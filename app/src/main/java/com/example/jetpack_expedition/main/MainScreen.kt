@@ -19,8 +19,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
-import com.example.jetpack_expedition.main.recent.ui.ContactBottomSheetContent
-import com.example.jetpack_expedition.main.recent.ui.RecentScreen
+import com.example.jetpack_expedition.main.recent.composable.ContactBottomSheetContent
+import com.example.jetpack_expedition.main.recent.RecentScreen
 import com.example.jetpack_expedition.main.record.RecordListScreen
 import com.example.jetpack_expedition.main.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.settings.SettingsScreen

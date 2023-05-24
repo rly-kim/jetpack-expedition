@@ -1,16 +1,10 @@
-package com.example.jetpack_expedition.main.record.domain
+package com.example.jetpack_expedition.domain.entity.record
 import android.net.Uri
 import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
-class Record(val title: String, val path: Uri, val duration: String, dateTime: String) {
-
-    val dateTime: String
-
-    init {
-        this.dateTime = changeDateTimeFormat(dateTime)
-    }
+class Record(val title: String, val path: Uri, val duration: String, val dateTime: String) {
 
     private fun changeDateTimeFormat(dateTime: String): String {
         val output: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

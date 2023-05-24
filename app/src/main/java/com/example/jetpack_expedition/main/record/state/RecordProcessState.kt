@@ -6,16 +6,16 @@ package com.example.jetpack_expedition.main.record.state
 ///         ㄴ 재생 중 상태 (RecordingInTemporalPlayState)
 ///         ㄴ 일시 정지 상태 (RecordingInPauseState)
 
-abstract class RecordProcessState {
+sealed class RecordProcessState {
     abstract val whoIsPlaying: Int
 }
 
-class RecordingInitState : RecordProcessState() {
+object RecordingInitState : RecordProcessState() {
     override val whoIsPlaying: Int
         get() = -1
 }
 
-abstract class RecordInProgressState : RecordProcessState() {
+sealed class RecordInProgressState : RecordProcessState() {
     abstract val elapsedTime: Float
 
     abstract fun copyState(elapsedTime: Float): RecordInProgressState

@@ -2,7 +2,6 @@ package com.example.jetpack_expedition.main.screen.record
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,28 +9,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jetpack_expedition.common.util.OnLifecycleEvent
-import com.example.jetpack_expedition.main.screen.record.state.PermissionState
-import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitState
 import com.example.jetpack_expedition.main.screen.record.composable.PermissionAlertDialog
 import com.example.jetpack_expedition.main.screen.record.composable.RecordListView
+import com.example.jetpack_expedition.main.screen.record.state.PermissionState
+import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitState
 import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordingViewModel
 
 @Composable
 fun RecordListScreen(
-    recordDataViewModel: RecordDataViewModel,
+    recordDataViewModel: RecordDataViewModel = hiltViewModel(),
+    recordingViewModel: RecordingViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
-    val recordingViewModel = RecordingViewModel(recordDataViewModel.context)
 
     val recordState by recordDataViewModel.recordDataState.collectAsStateWithLifecycle()
 
@@ -88,6 +86,6 @@ fun RecordListScreen(
         RecordListView(
             recordState = recordState,
             recordingViewModel = recordingViewModel,
-            onRecordToggled = { index, recordPath -> recordingViewModel.toggle(index, recordPath) },
+            onRecordToggled = { index, recordPath -> recordingViewModel.toggle(context, index, recordPath) },
         )
 }

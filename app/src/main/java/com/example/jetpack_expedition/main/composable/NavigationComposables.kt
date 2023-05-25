@@ -24,7 +24,6 @@ import com.example.jetpack_expedition.main.navigateSingleTopTo
 import com.example.jetpack_expedition.main.screen.recent.RecentScreen
 import com.example.jetpack_expedition.main.screen.recent.composable.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.screen.record.RecordListScreen
-import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordDataViewModel
 import com.example.jetpack_expedition.main.screen.settings.SettingsScreen
 import com.example.jetpack_expedition.main.screen.settings.view.BlockManagementView
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -36,7 +35,6 @@ import com.google.accompanist.navigation.material.bottomSheet
 fun MainScreenNavigationConfigurations(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    recordDataViewModel: RecordDataViewModel,
 ) {
     NavHost(
         navController,
@@ -50,7 +48,7 @@ fun MainScreenNavigationConfigurations(
             RecentScreen(onBottomSheetCall = { navController.navigate("contactBottomSheet") } )
         }
         composable(ScreenTab.Record.route) {
-            RecordListScreen(recordDataViewModel)
+            RecordListScreen()
         }
         composable(ScreenTab.Settings.route) {
             SettingsScreen( navigateToAdditionalFunctionsPage = {navController.navigate("additionalFunctionsPage")})

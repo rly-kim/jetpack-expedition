@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.jetpack_expedition.common.ui.DoubleCircleDivider
 import com.example.jetpack_expedition.common.ui.noRippleClickable
@@ -36,7 +37,10 @@ import com.example.jetpack_expedition.main.screen.recent.viewmodel.PullToRefresh
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PhoneCallList(
-    onBottomSheetCall: () -> Unit, viewModel: PullToRefreshUIViewModel, calls: List<Call>) {
+    onBottomSheetCall: () -> Unit,
+    viewModel: PullToRefreshUIViewModel = hiltViewModel(),
+    calls: List<Call>,
+) {
     val pullToRefreshUIState by viewModel.pullToRefreshUIState.collectAsStateWithLifecycle()
     val state = rememberPullRefreshState(
         pullToRefreshUIState is PullToRefreshInProgress,

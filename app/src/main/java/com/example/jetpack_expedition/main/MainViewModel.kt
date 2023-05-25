@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+class MainViewModel @Inject constructor(): ViewModel() {
     private val _mainTabState = MutableStateFlow(ScreenTab.Recent)
     val mainTabState: StateFlow<ScreenTab> = _mainTabState
 

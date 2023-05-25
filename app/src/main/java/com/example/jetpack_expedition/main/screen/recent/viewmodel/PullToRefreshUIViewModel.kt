@@ -5,16 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.jetpack_expedition.main.screen.recent.state.PullToRefreshIdle
 import com.example.jetpack_expedition.main.screen.recent.state.PullToRefreshInProgress
 import com.example.jetpack_expedition.main.screen.recent.state.PullToRefreshUIState
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PullToRefreshUIViewModel : ViewModel() {
+@HiltViewModel
+class PullToRefreshUIViewModel @Inject constructor(): ViewModel() {
     private val _pullToRefreshUIState = MutableStateFlow<PullToRefreshUIState>(PullToRefreshIdle)
     var pullToRefreshUIState: StateFlow<PullToRefreshUIState> = _pullToRefreshUIState.asStateFlow()
 

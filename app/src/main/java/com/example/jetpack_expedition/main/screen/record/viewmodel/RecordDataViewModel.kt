@@ -1,27 +1,31 @@
 package com.example.jetpack_expedition.main.screen.record.viewmodel
 
-import android.app.Application
+import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.core.net.toUri
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jetpack_expedition.di.FilePath
 import com.example.jetpack_expedition.domain.entity.record.Record
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataFetchedState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitFetchingState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
+import javax.inject.Inject
 
-
-class RecordDataViewModel(
-     val context: Application,
-    private val filePath: String
-): AndroidViewModel(context) {
+@HiltViewModel
+class RecordDataViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
+    @FilePath val filePath: String
+): ViewModel() {
 
     private var _recordDataState = MutableStateFlow<RecordDataState>(RecordDataInitState(listOf()))
     val recordDataState = _recordDataState.asStateFlow()

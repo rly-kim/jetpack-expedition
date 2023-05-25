@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.example.jetpack_expedition.R
 
 @Composable

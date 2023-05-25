@@ -1,10 +1,8 @@
 package com.example.jetpack_expedition.main.screen.record.viewmodel
 
-import android.app.Application
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpack_expedition.main.screen.record.state.RecordInProgressState
@@ -12,26 +10,17 @@ import com.example.jetpack_expedition.main.screen.record.state.RecordProcessStat
 import com.example.jetpack_expedition.main.screen.record.state.RecordingInPauseState
 import com.example.jetpack_expedition.main.screen.record.state.RecordingInTemporalPlayState
 import com.example.jetpack_expedition.main.screen.record.state.RecordingInitState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import java.io.FileDescriptor
-import java.io.FileInputStream
-import java.net.URI
 import java.util.Timer
 import java.util.TimerTask
+import javax.inject.Inject
 
-class RecordingViewModel(
-    private val context: Application
-) : AndroidViewModel(context) {
-
-
+@HiltViewModel
+class RecordingViewModel @Inject constructor() : ViewModel() {
 
     private var _recordingState = MutableStateFlow<RecordProcessState>(RecordingInitState)
     val recordingState = _recordingState.asStateFlow()
@@ -56,7 +45,7 @@ class RecordingViewModel(
         pause()
     }
 
-    private fun play(path: Uri) {
+    private fun play(context: Context, path: Uri) {
         viewModelScope.launch {
             timer = Timer()
             task = makeTimerTask()
@@ -108,15 +97,16 @@ class RecordingViewModel(
     private fun streamCurrentPosition() {
         if (recordingState.value is RecordingInTemporalPlayState) {
             if ((recordingState.value as RecordingInTemporalPlayState).elapsedTime.toInt() != mediaPlayer.currentPosition)
-            viewModelScope.launch {
-                _recordingState.update {
-                    (recordingState.value as RecordingInTemporalPlayState).copyState(mediaPlayer.currentPosition.toFloat())
+                viewModelScope.launch {
+                    _recordingState.update {
+                        (recordingState.value as RecordingInTemporalPlayState).copyState(mediaPlayer.currentPosition.toFloat())
+                    }
                 }
-            }
         }
     }
 
     fun toggle(
+        context: Context,
         fileIndex: Int,
         path: Uri,
     ) {
@@ -130,8 +120,7 @@ class RecordingViewModel(
                     }
                 }
                 resume(path)
-            }
-            else if (recordingState.value is RecordingInTemporalPlayState) {
+            } else if (recordingState.value is RecordingInTemporalPlayState) {
                 pause()
                 viewModelScope.launch {
                     _recordingState.update {
@@ -151,7 +140,7 @@ class RecordingViewModel(
                     RecordingInTemporalPlayState(fileIndex)
                 }
             }
-            play(path)
+            play(context, path)
         }
     }
 

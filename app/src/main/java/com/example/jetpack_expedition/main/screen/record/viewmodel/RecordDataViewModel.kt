@@ -8,16 +8,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetpack_expedition.di.FilePath
 import com.example.jetpack_expedition.domain.entity.record.Record
+import com.example.jetpack_expedition.main.screen.record.state.RecordDataFetchFailedState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataFetchedState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitFetchingState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataInitState
 import com.example.jetpack_expedition.main.screen.record.state.RecordDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -25,29 +28,40 @@ import javax.inject.Inject
 class RecordDataViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     @FilePath val filePath: String
-): ViewModel() {
+) : ViewModel() {
 
     private var _recordDataState = MutableStateFlow<RecordDataState>(RecordDataInitState(listOf()))
     val recordDataState = _recordDataState.asStateFlow()
 
     fun getRecordFiles() {
+        // viewmodel이 clear될 때 모든 coroutine 작업을 cancel
         viewModelScope.launch {
             _recordDataState.update {
                 RecordDataInitFetchingState
             }
-        }
-        val mediaMetadataRetriever = MediaMetadataRetriever()
-        val files = File("$filePath/Voice Recorder").listFiles()
-        val fileRecords = files
-            .map {
-                mediaMetadataRetriever.setDataSource(context, Uri.fromFile(it))
-                val duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION) ?: ""
-                val dateTime = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE) ?: ""
-                Record(title = it.name, it.toUri(), duration, dateTime)
+            val mediaMetadataRetriever = MediaMetadataRetriever()
+            withContext(Dispatchers.IO) {
+                Thread.sleep(1000)
+                File("$filePath/Voice Recorder").listFiles()
+            }?.let {
+                val fileRecords = it
+                        .map {file ->
+                            mediaMetadataRetriever.setDataSource(context, Uri.fromFile(file))
+                            val duration =
+                                mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                                    ?: ""
+                            val dateTime =
+                                mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE)
+                                    ?: ""
+                            Record(title = file.name, file.toUri(), duration, dateTime)
+                        }
+                    _recordDataState.update {
+                        RecordDataFetchedState(recordList = fileRecords)
+                    }
+                return@launch
             }
-        viewModelScope.launch {
             _recordDataState.update {
-                RecordDataFetchedState(recordList = fileRecords)
+                RecordDataFetchFailedState(recordList = listOf())
             }
         }
     }

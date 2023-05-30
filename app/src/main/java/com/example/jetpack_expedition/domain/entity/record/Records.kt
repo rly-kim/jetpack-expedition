@@ -4,7 +4,7 @@ import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
-class Record(val title: String, val path: Uri, val duration: String, val dateTime: String) {
+data class Record(val title: String, val path: Uri, val duration: String, val dateTime: String) {
 
     private fun changeDateTimeFormat(dateTime: String): String {
         val output: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -29,7 +29,7 @@ import com.example.jetpack_expedition.main.screen.record.viewmodel.RecordingView
 @Composable
 fun RecordListView(
     recordState: RecordDataState,
-    recordingViewModel: RecordingViewModel,
+    recordingViewModel: RecordingViewModel,// TODO recordingViewModel: RecordingViewModel = hiltViewModel()
     onRecordToggled: (index: Int, recordPath: Uri) -> Unit
 ) {
 

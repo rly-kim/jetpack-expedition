@@ -51,7 +51,7 @@ fun AlertButtons(context: Context, permissionIgnore: () -> Unit) {
             )
             intent.putExtra(
                 Settings.EXTRA_CHANNEL_ID,
-                "channelId"
+                "channelId" // TODO
             ) // Replace with your setting key
             context.startActivity(intent)
         }) {

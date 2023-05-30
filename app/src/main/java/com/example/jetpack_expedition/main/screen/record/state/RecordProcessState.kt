@@ -38,3 +38,9 @@ class RecordingInTemporalPlayState(
     }
 
 }
+
+class RecordingTerminatedState(
+    override val whoIsPlaying: Int,
+): RecordProcessState() {
+
+}

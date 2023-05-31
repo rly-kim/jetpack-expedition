@@ -1,6 +1,12 @@
 package com.example.jetpack_expedition.main.screen.dialer.view
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +22,9 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.jetpack_expedition.main.screen.dialer.viewmodel.DialerViewModel
 
 @Composable
@@ -24,6 +32,21 @@ fun KeypadView(
     dialerViewModel: DialerViewModel,
 ) {
     Log.d("CompositionTest", "KeypadView")
+
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d("PermissionTest","Manifest.permission.CALL_PHONE GRANTED")
+            dialerViewModel.call(context)
+        }
+        else {
+            Log.d("PermissionTest","Manifest.permission.CALL_PHONE DENIED")
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -91,11 +114,12 @@ fun KeypadView(
             // 전화 걸기
             IconButton(
                 onClick = {
-//                    phoneCall(
-//                        context = context,
-//                        phoneNumber = dialerViewModel.numberState.number,
-//                        permissionsLauncher = permissionsLauncher,
-//                    )
+                    if (dialerViewModel.isCallPermissionAllowed(context)) {
+                        dialerViewModel.call(context)
+                    }
+                    else {
+                        permissionLauncher.launch(Manifest.permission.CALL_PHONE)
+                    }
                 }
             ) {
                 Icon(

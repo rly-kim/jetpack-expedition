@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jetpack_expedition.main.screen.dialer.view.DialerHeader
 import com.example.jetpack_expedition.main.screen.dialer.view.DialerTextFieldView
 
 @Composable
@@ -25,11 +26,11 @@ fun DialerScreen(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 15.dp)
+            .padding(all = 15.dp)
             .background(color = Color.White)
     ) {
-        // 연락처 추가, 연락처 검색, 더보기 하는 헤더
-//        DialerHeaderView(navController)
+        // 연락처 추가, 연락처 검색 하는 헤더
+        DialerHeader()
 
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -37,7 +38,6 @@ fun DialerScreen(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             // 전화 번호 필드
             DialerTextFieldView(dialerViewModel.number)
 
@@ -45,7 +45,6 @@ fun DialerScreen(
 
             // 키패드
             KeypadView(dialerViewModel)
-
         }
     }
 }

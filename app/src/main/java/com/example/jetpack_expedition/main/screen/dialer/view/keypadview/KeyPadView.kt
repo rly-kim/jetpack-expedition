@@ -1,9 +1,6 @@
-package com.example.jetpack_expedition.main.screen.dialer.view
+package com.example.jetpack_expedition.main.screen.dialer.view.keypadview
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.example.jetpack_expedition.main.screen.dialer.viewmodel.DialerViewModel
 
 @Composable
@@ -54,57 +50,57 @@ fun KeypadView(
         Row {
             KeyButtonView(
                 key = "1",
-                onClick = { dialerViewModel.onKeyTapped("1") }
+                onClick = { dialerViewModel.keypadTap("1") }
             )
             KeyButtonView(
                 key = "2",
-                onClick = { dialerViewModel.onKeyTapped("2") }
+                onClick = { dialerViewModel.keypadTap("2") }
             )
             KeyButtonView(
                 key = "3",
-                onClick = { dialerViewModel.onKeyTapped("3") }
+                onClick = { dialerViewModel.keypadTap("3") }
             )
         }
         Row {
             KeyButtonView(
                 key = "4",
-                onClick = { dialerViewModel.onKeyTapped("4") }
+                onClick = { dialerViewModel.keypadTap("4") }
             )
             KeyButtonView(
                 key = "5",
-                onClick = { dialerViewModel.onKeyTapped("5") }
+                onClick = { dialerViewModel.keypadTap("5") }
             )
             KeyButtonView(
                 key = "6",
-                onClick = { dialerViewModel.onKeyTapped("6") }
+                onClick = { dialerViewModel.keypadTap("6") }
             )
         }
         Row {
             KeyButtonView(
                 key = "7",
-                onClick = { dialerViewModel.onKeyTapped("7") }
+                onClick = { dialerViewModel.keypadTap("7") }
             )
             KeyButtonView(
                 key = "8",
-                onClick = { dialerViewModel.onKeyTapped("8") }
+                onClick = { dialerViewModel.keypadTap("8") }
             )
             KeyButtonView(
                 key = "9",
-                onClick = { dialerViewModel.onKeyTapped("9") }
+                onClick = { dialerViewModel.keypadTap("9") }
             )
         }
         Row {
             KeyButtonView(
                 key = "*",
-                onClick = { dialerViewModel.onKeyTapped("*") }
+                onClick = { dialerViewModel.keypadTap("*") }
             )
             KeyButtonView(
                 key = "0",
-                onClick = { dialerViewModel.onKeyTapped("0") }
+                onClick = { dialerViewModel.keypadTap("0") }
             )
             KeyButtonView(
                 key = "#",
-                onClick = { dialerViewModel.onKeyTapped("#") }
+                onClick = { dialerViewModel.keypadTap("#") }
             )
         }
 
@@ -114,7 +110,7 @@ fun KeypadView(
             // 전화 걸기
             IconButton(
                 onClick = {
-                    if (dialerViewModel.isCallPermissionAllowed(context)) {
+                    if (dialerViewModel.checkCallPermission(context)) {
                         dialerViewModel.call(context)
                     }
                     else {
@@ -133,7 +129,7 @@ fun KeypadView(
 
             // 전화번호 필드 지우기
             IconButton(
-                onClick = { dialerViewModel.onDeleteTapped() }
+                onClick = { dialerViewModel.delete() }
             ) {
                 Icon(
                     modifier = Modifier.size(44.dp),

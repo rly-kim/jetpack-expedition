@@ -1,6 +1,6 @@
 package com.example.jetpack_expedition.main.screen.dialer
 
-import com.example.jetpack_expedition.main.screen.dialer.view.KeypadView
+import com.example.jetpack_expedition.main.screen.dialer.view.keypadview.KeypadView
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

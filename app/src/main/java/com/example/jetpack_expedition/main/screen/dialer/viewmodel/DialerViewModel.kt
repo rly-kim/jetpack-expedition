@@ -14,17 +14,17 @@ class DialerViewModel : ViewModel() {
     private val _number = mutableStateOf("")
     val number = _number
 
-    fun onKeyTapped(key: String) {
+    fun keypadTap(key: String) {
         Log.d("DialerViewModel","onKeyTapped $key")
         _number.value += key
     }
 
-    fun onDeleteTapped() {
+    fun delete() {
         Log.d("DialerViewModel","onDeleteTapped")
         _number.value = _number.value.dropLast(1)
     }
 
-    fun isCallPermissionAllowed(context: Context): Boolean {
+    fun checkCallPermission(context: Context): Boolean {
         Log.d("DialerViewModel","isCallPermissionAllowed")
         return ContextCompat.checkSelfPermission(
             context,
@@ -35,7 +35,7 @@ class DialerViewModel : ViewModel() {
     fun call(context: Context) {
         Log.d("DialerViewModel","call")
         val callIntent = Intent(Intent.ACTION_CALL)
-        callIntent.data = Uri.parse("tel:${number.value}")
+        callIntent.data = Uri.parse("tel:${_number.value}")
         context.startActivity(callIntent)
     }
 

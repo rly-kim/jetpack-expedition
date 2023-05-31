@@ -1,5 +1,6 @@
 package com.example.jetpack_expedition.main.composable
 
+import com.example.jetpack_expedition.main.screen.dialer.DialerScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jetpack_expedition.main.MainViewModel
 import com.example.jetpack_expedition.main.ScreenTab
 import com.example.jetpack_expedition.main.navigateSingleTopTo
+import com.example.jetpack_expedition.main.screen.contact.ContactScreen
 import com.example.jetpack_expedition.main.screen.recent.RecentScreen
 import com.example.jetpack_expedition.main.screen.recent.composable.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.screen.record.RecordListScreen
@@ -44,8 +46,14 @@ fun MainScreenNavigationConfigurations(
             .background(Color.LightGray)
             .padding(paddingValues = paddingValues),
     ) {
+        composable(ScreenTab.Dialer.route) {
+            DialerScreen()
+        }
         composable(ScreenTab.Recent.route) {
             RecentScreen(onBottomSheetCall = { navController.navigate("contactBottomSheet") } )
+        }
+        composable(ScreenTab.Contact.route) {
+            ContactScreen()
         }
         composable(ScreenTab.Record.route) {
             RecordListScreen()

@@ -1,4 +1,4 @@
-package com.example.jetpack_expedition.main.screen.dialer.view.keypadview
+package com.example.jetpack_expedition.main.screen.dialer.view
 
 import android.Manifest
 import android.util.Log

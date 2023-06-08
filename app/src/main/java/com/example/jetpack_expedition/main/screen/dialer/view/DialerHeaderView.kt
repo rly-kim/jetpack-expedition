@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DialerHeader() {
-    Log.d("CompositionTest", "DialerHeader")
+fun DialerHeaderView() {
+    Log.d("CompositionTest", "DialerHeaderView")
 
     Row(
         modifier = Modifier

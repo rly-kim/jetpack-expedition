@@ -23,6 +23,8 @@ import com.example.jetpack_expedition.main.MainViewModel
 import com.example.jetpack_expedition.main.ScreenTab
 import com.example.jetpack_expedition.main.navigateSingleTopTo
 import com.example.jetpack_expedition.main.screen.contact.ContactScreen
+import com.example.jetpack_expedition.main.screen.contact.view.ContactAddBottomSheetView
+import com.example.jetpack_expedition.main.screen.contact.view.ContactEditBottomSheetView
 import com.example.jetpack_expedition.main.screen.recent.RecentScreen
 import com.example.jetpack_expedition.main.screen.recent.composable.ContactBottomSheetContent
 import com.example.jetpack_expedition.main.screen.record.RecordListScreen
@@ -53,7 +55,10 @@ fun MainScreenNavigationConfigurations(
             RecentScreen(onBottomSheetCall = { navController.navigate("contactBottomSheet") } )
         }
         composable(ScreenTab.Contact.route) {
-            ContactScreen()
+            ContactScreen(
+                onAddContactCall = { navController.navigate("contactAddBottomSheet") },
+                onEditContactCall = { navController.navigate("contactEditBottomSheet") },
+            )
         }
         composable(ScreenTab.Record.route) {
             RecordListScreen()
@@ -74,6 +79,19 @@ fun MainScreenNavigationConfigurations(
             }, {
                 navController.popBackStack()
             })
+        }
+        bottomSheet(
+            route = "contactAddBottomSheet",
+        ) {
+            ContactAddBottomSheetView(
+                popBack = {
+                    navController.popBackStack()
+                },
+
+            )
+        }
+        bottomSheet(route = "contactEditBottomSheet") {
+            ContactEditBottomSheetView()
         }
 
     }

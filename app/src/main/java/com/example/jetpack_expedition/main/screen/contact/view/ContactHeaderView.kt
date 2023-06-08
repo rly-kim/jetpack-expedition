@@ -15,17 +15,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ContactHeader() {
-    Log.d("CompositionTest", "ContactHeader")
+fun ContactHeaderView(
+    onAddContactCall: () -> Unit,
+    onEditContactCall: () -> Unit,
+) {
+    Log.d("CompositionTest", "ContactHeaderView")
 
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
     ) {
+
         // 연락처 추가
         IconButton(
-            onClick = {}
+            onClick = {
+                onAddContactCall()
+            }
         ) {
             Icon(
                 modifier = Modifier.size(32.dp),
@@ -33,9 +39,12 @@ fun ContactHeader() {
                 contentDescription = "Add",
             )
         }
+
         // 연락처 검색
         IconButton(
-            onClick = {}
+            onClick = {
+                onEditContactCall()
+            }
         ) {
             Icon(
                 modifier = Modifier.size(32.dp),
@@ -43,6 +52,7 @@ fun ContactHeader() {
                 contentDescription = "Search",
             )
         }
+
         // 더보기
 //        IconButton(
 //            onClick = {}
@@ -53,5 +63,6 @@ fun ContactHeader() {
 //                contentDescription = "MoreVert",
 //            )
 //        }
+
     }
 }

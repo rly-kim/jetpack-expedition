@@ -20,7 +20,9 @@ import javax.inject.Singleton
 class PullToRefreshUIViewModel @Inject constructor(): ViewModel() {
     private val _pullToRefreshUIState = MutableStateFlow<PullToRefreshUIState>(PullToRefreshIdle)
     var pullToRefreshUIState: StateFlow<PullToRefreshUIState> = _pullToRefreshUIState.asStateFlow()
+    var number = 1
     fun initialFetch() {
+        number = 2
             _pullToRefreshUIState.update {
                 PullToRefreshFetched
         }

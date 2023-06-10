@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.example.jetpack_expedition.main.MainScreen2
+import androidx.navigation.compose.rememberNavController
+import com.example.jetpack_expedition.main.composable.MainScreenNavigationConfigurations
 import com.example.jetpack_expedition.ui.theme.JetpackexpeditionTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,13 +17,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             JetpackexpeditionTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen2()
-                   // SplashScreen()
+                    MainScreenNavigationConfigurations(navController)
                 }
             }
         }

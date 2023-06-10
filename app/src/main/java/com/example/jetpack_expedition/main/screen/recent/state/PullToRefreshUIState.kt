@@ -6,3 +6,5 @@ sealed class PullToRefreshUIState
 object PullToRefreshIdle : PullToRefreshUIState()
 
 object PullToRefreshInProgress : PullToRefreshUIState()
+
+object PullToRefreshFetched: PullToRefreshUIState()

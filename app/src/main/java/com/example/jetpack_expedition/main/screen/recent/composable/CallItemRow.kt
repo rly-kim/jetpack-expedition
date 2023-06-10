@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -20,10 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.jetpack_expedition.R
 import com.example.jetpack_expedition.domain.entity.recent.Call
-import com.example.jetpack_expedition.ui.theme.CallHistorySavedSingleTextStyle
-import com.example.jetpack_expedition.ui.theme.CallHistoryUnsavedSingleTextStyle
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CallItemRow(onBottomSheetCall: () -> Unit, call: Call, expanded: Boolean) {
 
@@ -57,7 +54,11 @@ fun CallItemRow(onBottomSheetCall: () -> Unit, call: Call, expanded: Boolean) {
                         .weight(2f),
                     contentAlignment = Alignment.CenterEnd,
                 ) {
-                    Text(call.callTime)
+                    Text(
+                        call.callTime,
+                        color = MaterialTheme.colors.onSecondary,
+                        style = MaterialTheme.typography.subtitle2,
+                    )
                 }
                 Icon(
                     imageVector = if(expanded) arrowUpIcon else arrowDownIcon,
@@ -68,6 +69,8 @@ fun CallItemRow(onBottomSheetCall: () -> Unit, call: Call, expanded: Boolean) {
                 modifier = Modifier
                     .padding(PaddingValues(start = 20.dp)),
                 text = stringResource(R.string.incomingCall),
+                color = MaterialTheme.colors.onSecondary,
+                style = MaterialTheme.typography.subtitle1,
             )
             if(expanded) {
                 Row(
@@ -87,7 +90,7 @@ fun CallItemRow(onBottomSheetCall: () -> Unit, call: Call, expanded: Boolean) {
 fun savedCallNumber(name: String) {
     Text(
         text = name,
-        style = CallHistorySavedSingleTextStyle,
+        style = MaterialTheme.typography.body1,
 
         )
 }
@@ -96,7 +99,7 @@ fun savedCallNumber(name: String) {
 fun unsavedCallNumber(number: String) {
     Text(
         text = number,
-        style = CallHistoryUnsavedSingleTextStyle,
+        style = MaterialTheme.typography.body1,
 
         )
 }

@@ -1,6 +1,7 @@
 package com.example.jetpack_expedition.main.screen.recent.composable
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -35,9 +37,14 @@ fun ContactBottomSheetContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
     Column(
-      //  modifier = Modifier.statusBarsPadding().navigationBarsPadding().imePadding()
+      //modifier = Modifier.statusBarsPadding().navigationBarsPadding().imePadding()
+    modifier = Modifier.background(MaterialTheme.colors.background),
     ) {
-        Text(text = stringResource(R.string.addContactTitle))
+        Text(
+            text = stringResource(R.string.addContactTitle),
+            color = MaterialTheme.colors.primary,
+            style = MaterialTheme.typography.h5,
+        )
         ContactNickNameField()
         ContactNumberField()
         Row {
@@ -49,7 +56,11 @@ fun ContactBottomSheetContent(
                     }
                 }
             ) {
-                Text(stringResource(R.string.closeContactBottomSheetText))
+                Text(
+                    stringResource(R.string.closeContactBottomSheetText),
+                    color = MaterialTheme.colors.onSecondary,
+                    style = MaterialTheme.typography.body2,
+                )
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(
@@ -72,7 +83,10 @@ fun ContactNickNameField() {
         mutableStateOf("")
     }
     Column {
-        Text(text = "연락처 별칭")
+        Text(
+            text = "연락처 별칭",
+            style = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onPrimary)
+        )
         BasicTextField(
             value = textState.value,
             onValueChange = {
@@ -91,7 +105,8 @@ fun ContactNickNameField() {
                     innerTextField()
                     Divider()
                 }
-            }
+            },
+            textStyle = MaterialTheme.typography.body2.copy(color = MaterialTheme.colors.onPrimary)
         )
     }
 }

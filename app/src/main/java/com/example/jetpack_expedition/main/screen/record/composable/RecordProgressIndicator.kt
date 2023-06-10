@@ -1,6 +1,7 @@
 package com.example.jetpack_expedition.main.screen.record.composable
 
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable

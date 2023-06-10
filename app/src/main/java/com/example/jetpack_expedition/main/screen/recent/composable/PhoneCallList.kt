@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpack_expedition.common.ui.DoubleCircleDivider
 import com.example.jetpack_expedition.common.ui.noRippleClickable
 import com.example.jetpack_expedition.domain.entity.recent.Call
@@ -49,7 +51,7 @@ fun PhoneCallList(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Color.LightGray)
+            .background(MaterialTheme.colors.background)
             .pullRefresh(state)//state 적용
             .fillMaxSize()
             .padding(top = 20.dp)
@@ -71,7 +73,7 @@ fun PhoneCallList(
                         modifier = Modifier
                             .size(70.dp)
                             .align(Alignment.Center),
-                        color = Color.Red,
+                        color = MaterialTheme.colors.onBackground,
                         strokeWidth = 3.dp,
                     )
                 }
@@ -85,7 +87,7 @@ fun PhoneCallList(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .clip(getCellRoundShape(index, calls.size - 1))
-                    .background(Color.White)
+                    .background(MaterialTheme.colors.surface)
                     .noRippleClickable {
                         isExpanded = !isExpanded
                     }

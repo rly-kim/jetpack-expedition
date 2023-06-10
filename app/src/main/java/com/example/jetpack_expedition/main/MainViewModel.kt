@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(): ViewModel() {
-    private val _mainTabState = MutableStateFlow(ScreenTab.Recent)
-    val mainTabState: StateFlow<ScreenTab> = _mainTabState
+    private val _mainTabState = MutableStateFlow(MainRouteItem.Recent)
+    val mainTabState: StateFlow<MainRouteItem> = _mainTabState
 
     fun tapped(tabIndex: Int) {
-        _mainTabState.value = ScreenTab.values()[tabIndex]
+        _mainTabState.value = MainRouteItem.values()[tabIndex]
     }
 
     override fun onCleared() {

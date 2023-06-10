@@ -60,53 +60,47 @@ fun MainScreenNavigationConfigurations(
                 }
             }
         }
-        navigation(
-            route = RootRouteItem.Main.route,
-            startDestination = RootRouteItem.Recent.route,
-        ) {
-            composable(MainRouteItem.Recent.route) {
-               // val parentEntry = navController.getBackStackEntry("splashScreen")
-                MainScreen2(navController = navController, bottomSheetNavigator = bottomSheetNavigator) {
-                    RecentScreen(
+
+        composable(RootRouteItem.Main.route) {
+            MainScreen2(
+                navController = navController,
+                bottomSheetNavigator = bottomSheetNavigator
+            ) { it ->
+                when (it) {
+                    0 -> RecentScreen(
                         pullToRefreshUIViewModel = hiltViewModel(),//parentEntry),
                         onBottomSheetCall = {
                             navController.navigate(MainRoutePushItem.ContactBottomSheet.route)
                         }
                     )
-                }
-            }
-            composable(RootRouteItem.Record.route) {
-                MainScreen2(navController = navController, bottomSheetNavigator = bottomSheetNavigator) {
-                    RecordListScreen()
-                }
-            }
-            composable(RootRouteItem.Settings.route) {
-                MainScreen2(navController = navController, bottomSheetNavigator = bottomSheetNavigator) {
-                    SettingsScreen(navigateToAdditionalFunctionsPage = {
+
+                    1 -> RecordListScreen()
+                    2 -> SettingsScreen(navigateToAdditionalFunctionsPage = {
                         navController.navigate(
                             MainRoutePushItem.AdditionalFunctionsPage.route
                         )
                     })
                 }
             }
-
-            composable(MainRoutePushItem.AdditionalFunctionsPage.route) {
-                BlockManagementView(
-                    onPopStack = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-            bottomSheet(route = MainRoutePushItem.ContactBottomSheet.route) {
-                ContactBottomSheetContent({
+        }
+        composable(MainRoutePushItem.AdditionalFunctionsPage.route) {
+            BlockManagementView(
+                onPopStack = {
                     navController.popBackStack()
-                }, {
-                    navController.popBackStack()
-                })
-            }
+                }
+            )
+        }
+        bottomSheet(route = MainRoutePushItem.ContactBottomSheet.route) {
+            ContactBottomSheetContent({
+                navController.popBackStack()
+            }, {
+                navController.popBackStack()
+            })
         }
     }
+    //  }
 }
+
 @Composable
 fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

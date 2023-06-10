@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jetpack_expedition.main.composable.currentRoute
@@ -28,49 +30,39 @@ import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 fun MainScreen2(
     navController: NavHostController,
     bottomSheetNavigator: BottomSheetNavigator,
-    state: @Composable () -> Unit,
-   //mainViewModel: MainViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel(),
+    updateTabScreen: @Composable (Int) -> Unit,
 ) {
-//    val mainNavController = rememberNavController()
-//    val mainTabState = mainViewModel.mainTabState.collectAsStateWithLifecycle()
-    val showBars = MainRouteItem.values().map { it.route }.contains(
-        //mainNavController
-        navController
-            .currentBackStackEntryAsState().value?.destination?.route
-    )
-
-    //val bottomSheetNavigator = rememberBottomSheetNavigator()
-//    mainNavController.navigatorProvider += bottomSheetNavigator
-//    navController.navigatorProvider += bottomSheetNavigator
+    val mainTabState = mainViewModel.mainTabState.collectAsStateWithLifecycle()
+    // TODO main tab 화면일 때만 탭바 보이도록 조건 설정 필요
+//    val showBars = MainRouteItem.values().map { it.route }.contains(
+//        navController
+//            .currentBackStackEntryAsState().value?.destination?.route
+//    )
 
     Scaffold(
         topBar = {
-            if (showBars)
+            if (true)
                 Text(
                     modifier = Modifier
                         .padding(top = 10.dp, bottom = 10.dp, start = 20.dp),
-                    //text = mainTabState.value.title,
-                    text = "temp~",
+                    text = MainRouteItem.values()[mainTabState.value].title,
                     style = MaterialTheme.typography.h3
                 )
         },
         bottomBar = {
             Log.d("navigation route", "${currentRoute(navController)}")
-            if (showBars) {
-//                PhoneAppBottomNavigation(
-//                    navController,
-//                    MainRouteItem.values().toList(),
-//                )
+            if (true) {
                 BottomNavigation {
                     val currentRoute = currentRoute(navController)
-                    MainRouteItem.values().toList().forEach { screen ->
+                    MainRouteItem.values().toList().forEachIndexed { index, screen ->
                         BottomNavigationItem(
                             icon = { Icon(screen.icon, contentDescription = null) },
                             label = { Text(screen.route) },
                             selected = currentRoute == screen.route,
                             onClick = {
                                 if (currentRoute != screen.route) {
-                                    navController.navigateSingleTopTo(screen.route)
+                                    mainViewModel.tapped(index)
                                 }
                             },
                         )
@@ -86,8 +78,7 @@ fun MainScreen2(
                 .padding(paddingValues = padding),
         ) {
             ModalBottomSheetLayout(bottomSheetNavigator) {
-                //MainTabNavigator(mainNavController, navController, navController.getBackStackEntry("splashScreen"))
-                state()
+                updateTabScreen(mainTabState.value)
             }
         }
     }

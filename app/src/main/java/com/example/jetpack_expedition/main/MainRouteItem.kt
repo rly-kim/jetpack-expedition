@@ -18,14 +18,3 @@ enum class MainRoutePushItem(val route: String) {
     AdditionalFunctionsPage("additionalFunctionsPage"),
     ContactBottomSheet("contactBottomSheet")
 }
-
-//enum class MainTabState(val screen: @Composable () -> Unit) {
-//    Recent(screen = {
-//        .RecentScreen(
-//            pullToRefreshUIViewModel = androidx.hilt.navigation.compose.hiltViewModel(parentEntry),
-//            onBottomSheetCall = {
-//                navController.navigate(com.example.jetpack_expedition.main.MainRoutePushItem.ContactBottomSheet.route)
-//            }
-//        )
-//    })
-//}
